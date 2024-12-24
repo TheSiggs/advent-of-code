@@ -1,6 +1,7 @@
+from collections import Counter
 
-numL = []
-numR = []
+numsL = []
+numsR = []
 with open("in.txt", "r") as f:
     ftext = f.read()
     lines = ftext.split("\n")
@@ -8,18 +9,30 @@ with open("in.txt", "r") as f:
         lineS = line.split("   ")
         if len(lineS) < 2:
             continue
-        numL.append(lineS[0])
-        numR.append(lineS[1])
+        numsL.append(lineS[0])
+        numsR.append(lineS[1])
 
-numL = sorted(numL)
-numR = sorted(numR)
-
+# Part 1
+numL = sorted(numsL)
+numR = sorted(numsR)
 rolling = 0
 for i, _ in enumerate(numL):
     num1 = int(numL[i])
     num2 = int(numR[i])
     diff = abs(num1 - num2)
-    print(num1, num2, diff)
     rolling += diff
 
+
+counter = Counter(numsL)
+for i in counter:
+    counter[i] = 0
+
+for _, v in enumerate(numsR):
+    if v in counter:
+        counter[v] += 1
+
+print(counter)
+rolling = 0
+for i in counter:
+    rolling += (int(counter[i]) * int(i))
 print(rolling)
